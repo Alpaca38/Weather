@@ -7,6 +7,9 @@
 
 import UIKit
 import SnapKit
+private enum TableViewCellType: Int, CaseIterable {
+    case threehours
+}
 
 final class WeatherViewController: BaseViewController {
     private let viewModel = WeatherViewModel()
@@ -26,8 +29,10 @@ final class WeatherViewController: BaseViewController {
     }()
     private lazy var tableView = {
         let view = UITableView()
+        view.backgroundColor = Color.backgroundColor
         view.delegate = self
         view.dataSource = self
+        view.register(ThreeHoursTableViewCell.self, forCellReuseIdentifier: ThreeHoursTableViewCell.identifier)
         self.view.addSubview(view)
         return view
     }()
@@ -55,7 +60,7 @@ final class WeatherViewController: BaseViewController {
         self.view.addSubview(view)
         return view
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Color.backgroundColor
@@ -82,6 +87,12 @@ final class WeatherViewController: BaseViewController {
             $0.top.equalTo(mapButton)
             $0.trailing.equalToSuperview().offset(-20)
         }
+        
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(topView.snp.bottom).offset(20)
+            $0.horizontalEdges.equalTo(topView)
+            $0.bottom.equalTo(bottomView.snp.top)
+        }
     }
 }
 
@@ -93,6 +104,11 @@ private extension WeatherViewController {
             tempLabel.text = $0?.main.tempString
             descriptionLabel.text = $0?.weather.first?.description
             tempMinMaxLabel.text = $0?.main.tempMinMaxString
+        }
+        
+        viewModel.outputForeCastData.bind { [weak self] _ in
+            guard let self else { return }
+            tableView.reloadData()
         }
     }
     
@@ -107,13 +123,46 @@ private extension WeatherViewController {
 
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return TableViewCellType.allCases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "", for: indexPath)
-        return cell
+        let cellType = TableViewCellType.allCases[indexPath.row]
+        switch cellType {
+        case .threehours:
+            let cell = tableView.dequeueReusableCell(withIdentifier: ThreeHoursTableViewCell.identifier, for: indexPath) as! ThreeHoursTableViewCell
+            cell.collectionView.tag = indexPath.row
+            cell.collectionView.delegate = self
+            cell.collectionView.dataSource = self
+            cell.collectionView.reloadData()
+            return cell
+        }
+    }
+}
+
+extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let list = viewModel.outputForeCastData.value?.list else {
+            return 0
+        }
+        switch collectionView.tag {
+        case 0:
+            return list.count
+        default:
+            return 0
+        }
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        switch collectionView.tag {
+        case 0:
+            print("")
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThreeHoursCollectionViewCell.identifier, for: indexPath) as! ThreeHoursCollectionViewCell
+            let data = viewModel.outputForeCastData.value?.list[indexPath.item]
+            cell.configure(data: data)
+            return cell
+        default:
+            return UICollectionViewCell()
+        }
+    }
 }

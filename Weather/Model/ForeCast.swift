@@ -9,8 +9,6 @@ import Foundation
 
 // MARK: - ForeCast
 struct ForeCast: Decodable {
-    let cod: String
-    let message, cnt: Int
     let list: [List]
     let city: City
 }
@@ -29,12 +27,10 @@ struct List: Decodable {
     let weather: [Weather]
     let clouds: Clouds
     let wind: Wind
-    let rain: Rain?
-    let snow: Snow?
-    let dtTxt: String
-
-    enum CodingKeys: String, CodingKey {
-        case dt, main, weather, clouds, wind, rain, snow
-        case dtTxt = "dt_txt"
+    
+    var time: String {
+        let date = Date(timeIntervalSince1970: TimeInterval(dt))
+        let time = date.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).locale(Locale(identifier: "ko_KR")))
+        return time
     }
 }

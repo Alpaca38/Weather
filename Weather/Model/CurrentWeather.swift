@@ -11,18 +11,8 @@ import Foundation
 struct CurrentWeather: Decodable {
     let coord: Coord
     let weather: [Weather]
-    let base: String
     let main: Main
-    let visibility: Int
-    let wind: Wind
-    let rain: Rain?
-    let snow: Snow?
-    let clouds: Clouds
-    let dt: Int // UTC
-    let sys: Sys
-    let timezone, id: Int
     let name: String
-    let cod: Int
 }
 
 // MARK: - Clouds
@@ -89,6 +79,11 @@ struct Sys: Decodable {
 struct Weather: Decodable {
     let id: Int
     let main, description, icon: String
+    
+    var imageURL: URL? {
+        let url = URL(string: "https://openweathermap.org/img/wn/\(icon).png")
+        return url
+    }
 }
 
 // MARK: - Wind

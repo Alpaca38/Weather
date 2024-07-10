@@ -41,7 +41,7 @@ final class NetworkManager {
                 case 500:
                     completion(.failure(.serverError))
                 default:
-                    print("Network Error")
+                    print("unknown error")
                 }
             }
         }

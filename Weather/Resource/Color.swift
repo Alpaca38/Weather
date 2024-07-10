@@ -9,5 +9,5 @@ import UIKit
 
 enum Color {
     static let backgroundColor = UIColor(red: 122/255, green: 218/255, blue: 255/255, alpha: 1)
-    static let contentBackgroundColor = UIColor.black.withAlphaComponent(0.15)
+    static let contentBackgroundColor = UIColor.black.withAlphaComponent(0.2)
 }
