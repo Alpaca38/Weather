@@ -14,6 +14,17 @@
 		D10DA9F22C3E5FF0001F25FF /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D10DA9F12C3E5FF0001F25FF /* Base */; };
 		D10DA9FC2C3E600F001F25FF /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D10DA9FB2C3E600F001F25FF /* .gitignore */; };
 		D10DA9FF2C3E6038001F25FF /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DA9FE2C3E6038001F25FF /* APIKey.swift */; };
+		D10DAA022C3E6123001F25FF /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA012C3E6123001F25FF /* BaseViewController.swift */; };
+		D10DAA052C3E6465001F25FF /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA042C3E6465001F25FF /* WeatherAPI.swift */; };
+		D10DAA082C3E6600001F25FF /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D10DAA072C3E6600001F25FF /* Alamofire */; };
+		D10DAA0B2C3E660B001F25FF /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = D10DAA0A2C3E660B001F25FF /* SnapKit */; };
+		D10DAA0F2C3E6633001F25FF /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D10DAA0E2C3E6633001F25FF /* Kingfisher */; };
+		D10DAA112C3E6A9F001F25FF /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA102C3E6A9F001F25FF /* NetworkManager.swift */; };
+		D10DAA132C3E6AE3001F25FF /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA122C3E6AE3001F25FF /* APIError.swift */; };
+		D10DAA162C3E6CA4001F25FF /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA152C3E6CA4001F25FF /* CurrentWeather.swift */; };
+		D10DAA182C3E7255001F25FF /* ForeCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA172C3E7255001F25FF /* ForeCast.swift */; };
+		D10DAA1B2C3E78C5001F25FF /* BaseLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA1A2C3E78C5001F25FF /* BaseLabel.swift */; };
+		D10DAA1E2C3E7C52001F25FF /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA1D2C3E7C52001F25FF /* Color.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +37,14 @@
 		D10DA9F32C3E5FF0001F25FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D10DA9FB2C3E600F001F25FF /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		D10DA9FE2C3E6038001F25FF /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
+		D10DAA012C3E6123001F25FF /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		D10DAA042C3E6465001F25FF /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
+		D10DAA102C3E6A9F001F25FF /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		D10DAA122C3E6AE3001F25FF /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		D10DAA152C3E6CA4001F25FF /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
+		D10DAA172C3E7255001F25FF /* ForeCast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForeCast.swift; sourceTree = "<group>"; };
+		D10DAA1A2C3E78C5001F25FF /* BaseLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLabel.swift; sourceTree = "<group>"; };
+		D10DAA1D2C3E7C52001F25FF /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +52,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D10DAA0F2C3E6633001F25FF /* Kingfisher in Frameworks */,
+				D10DAA082C3E6600001F25FF /* Alamofire in Frameworks */,
+				D10DAA0B2C3E660B001F25FF /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,10 +81,14 @@
 		D10DA9E42C3E5FEF001F25FF /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				D10DAA1C2C3E7C45001F25FF /* Resource */,
+				D10DAA192C3E759A001F25FF /* View */,
+				D10DAA142C3E6C9E001F25FF /* Model */,
+				D10DAA032C3E6459001F25FF /* Network */,
+				D10DAA002C3E611B001F25FF /* Base */,
 				D10DA9FD2C3E602E001F25FF /* API */,
 				D10DA9E52C3E5FEF001F25FF /* AppDelegate.swift */,
 				D10DA9E72C3E5FEF001F25FF /* SceneDelegate.swift */,
-				D10DA9E92C3E5FEF001F25FF /* WeatherViewController.swift */,
 				D10DA9EE2C3E5FF0001F25FF /* Assets.xcassets */,
 				D10DA9F02C3E5FF0001F25FF /* LaunchScreen.storyboard */,
 				D10DA9F32C3E5FF0001F25FF /* Info.plist */,
@@ -76,6 +102,50 @@
 				D10DA9FE2C3E6038001F25FF /* APIKey.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		D10DAA002C3E611B001F25FF /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				D10DAA012C3E6123001F25FF /* BaseViewController.swift */,
+				D10DAA1A2C3E78C5001F25FF /* BaseLabel.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		D10DAA032C3E6459001F25FF /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				D10DAA042C3E6465001F25FF /* WeatherAPI.swift */,
+				D10DAA102C3E6A9F001F25FF /* NetworkManager.swift */,
+				D10DAA122C3E6AE3001F25FF /* APIError.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		D10DAA142C3E6C9E001F25FF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D10DAA152C3E6CA4001F25FF /* CurrentWeather.swift */,
+				D10DAA172C3E7255001F25FF /* ForeCast.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D10DAA192C3E759A001F25FF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D10DA9E92C3E5FEF001F25FF /* WeatherViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D10DAA1C2C3E7C45001F25FF /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				D10DAA1D2C3E7C52001F25FF /* Color.swift */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -94,6 +164,11 @@
 			dependencies = (
 			);
 			name = Weather;
+			packageProductDependencies = (
+				D10DAA072C3E6600001F25FF /* Alamofire */,
+				D10DAA0A2C3E660B001F25FF /* SnapKit */,
+				D10DAA0E2C3E6633001F25FF /* Kingfisher */,
+			);
 			productName = Weather;
 			productReference = D10DA9E22C3E5FEF001F25FF /* Weather.app */;
 			productType = "com.apple.product-type.application";
@@ -122,6 +197,12 @@
 				Base,
 			);
 			mainGroup = D10DA9D92C3E5FEF001F25FF;
+			packageReferences = (
+				D10DAA062C3E6600001F25FF /* XCRemoteSwiftPackageReference "Alamofire" */,
+				D10DAA092C3E660B001F25FF /* XCRemoteSwiftPackageReference "SnapKit" */,
+				D10DAA0C2C3E6615001F25FF /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				D10DAA0D2C3E6633001F25FF /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = D10DA9E32C3E5FEF001F25FF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -149,9 +230,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D10DAA022C3E6123001F25FF /* BaseViewController.swift in Sources */,
 				D10DA9EA2C3E5FEF001F25FF /* WeatherViewController.swift in Sources */,
 				D10DA9E62C3E5FEF001F25FF /* AppDelegate.swift in Sources */,
+				D10DAA112C3E6A9F001F25FF /* NetworkManager.swift in Sources */,
+				D10DAA052C3E6465001F25FF /* WeatherAPI.swift in Sources */,
+				D10DAA1E2C3E7C52001F25FF /* Color.swift in Sources */,
+				D10DAA132C3E6AE3001F25FF /* APIError.swift in Sources */,
+				D10DAA182C3E7255001F25FF /* ForeCast.swift in Sources */,
 				D10DA9FF2C3E6038001F25FF /* APIKey.swift in Sources */,
+				D10DAA1B2C3E78C5001F25FF /* BaseLabel.swift in Sources */,
+				D10DAA162C3E6CA4001F25FF /* CurrentWeather.swift in Sources */,
 				D10DA9E82C3E5FEF001F25FF /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -373,6 +462,59 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D10DAA062C3E6600001F25FF /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
+		D10DAA092C3E660B001F25FF /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		D10DAA0C2C3E6615001F25FF /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
+		D10DAA0D2C3E6633001F25FF /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.12.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D10DAA072C3E6600001F25FF /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D10DAA062C3E6600001F25FF /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		D10DAA0A2C3E660B001F25FF /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D10DAA092C3E660B001F25FF /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		D10DAA0E2C3E6633001F25FF /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D10DAA0D2C3E6633001F25FF /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D10DA9DA2C3E5FEF001F25FF /* Project object */;
 }
