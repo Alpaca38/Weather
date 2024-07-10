@@ -35,15 +35,11 @@ enum WeatherAPI {
         case .current(let parameter), .forecast(let parameter):
             switch parameter {
             case .cityID(let id):
-                ["id": id]
+                ["id": id, "appid": APIKey.openWeahterAPIKey]
             case .coordinates(let lat, let lon):
-                ["lat": lat, "lon": lon]
+                ["lat": lat, "lon": lon, "appid": APIKey.openWeahterAPIKey]
             }
         }
-    }
-    
-    var header: HTTPHeaders {
-        return ["appid": APIKey.openWeahterAPIKey]
     }
     
     var method: HTTPMethod {

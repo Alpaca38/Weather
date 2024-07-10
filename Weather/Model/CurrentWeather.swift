@@ -41,11 +41,14 @@ struct Main: Decodable {
     let pressure, humidity: Int
     
     var tempString: String {
-        return "\(temp)º"
+        let convertedTemp = (temp - 273.15).formatted(.number.precision(.fractionLength(1)))
+        return "\(convertedTemp)º"
     }
     
     var tempMinMaxString: String {
-        return "최고 : \(tempMax)º | 최저 : \(tempMin)º"
+        let convertedMax = (tempMax - 273.15).formatted(.number.precision(.fractionLength(1)))
+        let convertedMin = (tempMin - 273.15).formatted(.number.precision(.fractionLength(1)))
+        return "최고 : \(convertedMax)º | 최저 : \(convertedMin)º"
     }
 
     enum CodingKeys: String, CodingKey {

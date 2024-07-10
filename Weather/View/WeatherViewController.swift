@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 final class WeatherViewController: BaseViewController {
+    private let viewModel = WeatherViewModel()
     private let cityLabel = BaseLabel(font: .systemFont(ofSize: 32))
     private let tempLabel = BaseLabel(font: .systemFont(ofSize: 70))
     private let descriptionLabel = BaseLabel(font: .systemFont(ofSize: 24))
@@ -27,6 +28,8 @@ final class WeatherViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Color.backgroundColor
+        viewModel.inputViewDidLoadTriggger.value = ()
+        bindData()
     }
     
     override func configureLayout() {
@@ -34,7 +37,16 @@ final class WeatherViewController: BaseViewController {
             $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }
-
-
 }
 
+private extension WeatherViewController {
+    func bindData() {
+        viewModel.outputCurrentWeatherData.bind { [weak self] in
+            guard let self else { return }
+            cityLabel.text = $0?.name
+            tempLabel.text = $0?.main.tempString
+            descriptionLabel.text = $0?.weather.first?.description
+            tempMinMaxLabel.text = $0?.main.tempMinMaxString
+        }
+    }
+}

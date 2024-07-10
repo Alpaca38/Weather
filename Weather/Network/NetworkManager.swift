@@ -17,8 +17,7 @@ final class NetworkManager {
         AF.request(url,
                    method: api.method,
                    parameters: api.parameter,
-                   encoding: URLEncoding(destination: .queryString),
-                   headers: api.header
+                   encoding: URLEncoding(destination: .queryString)
         ).responseDecodable(of: responseType) { response in
             switch response.result {
             case .success(let value):
