@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - ForeCast
 struct ForeCast: Decodable {
-    let list: [List]
+    let list: [WeatherData]
     let city: City
 }
 
@@ -21,16 +21,23 @@ struct City: Decodable {
 }
 
 // MARK: - List
-struct List: Decodable {
+struct WeatherData: Decodable {
     let dt: Int // UTC
     let main: Main
     let weather: [Weather]
     let clouds: Clouds
     let wind: Wind
+    let dt_txt: String
     
     var time: String {
         let date = Date(timeIntervalSince1970: TimeInterval(dt))
         let time = date.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).locale(Locale(identifier: "ko_KR")))
         return time
+    }
+    
+    var day: String {
+        let date = Date(timeIntervalSince1970: TimeInterval(dt))
+        let day = Calendar.current.startOfDay(for: date).formatted(.dateTime.day().locale(Locale(identifier: "ko_KR")))
+        return day
     }
 }

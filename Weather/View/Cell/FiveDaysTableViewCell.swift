@@ -1,20 +1,25 @@
 //
-//  WeatherTableViewCell.swift
+//  FiveDaysTableViewCell.swift
 //  Weather
 //
-//  Created by 조규연 on 7/10/24.
+//  Created by 조규연 on 7/11/24.
 //
 
 import UIKit
 import SnapKit
 
-final class ThreeHoursTableViewCell: BaseTableViewCell {
-    private let titleLabel = BaseLabel(font: .systemFont(ofSize: 18))
+final class FiveDaysTableViewCell: BaseTableViewCell {
+    private let titleLabel = {
+        let view = BaseLabel(font: .systemFont(ofSize: 18))
+        view.text = "5일 간의 일기예보"
+        return view
+    }()
     
     lazy var collectionView = {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout())
         view.backgroundColor = .clear
-        view.register(ThreeHoursCollectionViewCell.self, forCellWithReuseIdentifier: ThreeHoursCollectionViewCell.identifier)
+        view.isScrollEnabled = false
+        view.register(MinMaxTempCollectionViewCell.self, forCellWithReuseIdentifier: MinMaxTempCollectionViewCell.identifier)
         return view
     }()
     
@@ -28,45 +33,34 @@ final class ThreeHoursTableViewCell: BaseTableViewCell {
         return view
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configure()
-    }
     override func configureLayout() {
-        contentView.addSubview(titleLabel)
-        
         customView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
         titleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().offset(20)
+            $0.top.equalToSuperview().offset(14)
+            $0.leading.equalToSuperview().offset(20)
+            $0.height.equalTo(40)
         }
         
         collectionView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
-            $0.height.equalTo(150)
+            $0.height.equalTo(400)
         }
     }
     
-    func configure() {
-        titleLabel.text = "3시간 간격의 일기예보"
-    }
-}
-
-private extension ThreeHoursTableViewCell {
-    func layout() -> UICollectionViewLayout {
+    func layout() -> UICollectionViewLayout{
         let layout = UICollectionViewFlowLayout()
         let sectionSpacing: CGFloat = 20
-        let cellSpacing: CGFloat = 16
-        let width = UIScreen.main.bounds.width - sectionSpacing * 2 - cellSpacing * 3
-        layout.itemSize = CGSize(width: width/4, height: width/4 * 1.3)
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = cellSpacing
-        layout.minimumInteritemSpacing = cellSpacing
+        let width = UIScreen.main.bounds.width - 40 - sectionSpacing * 2
+        layout.itemSize = CGSize(width: width, height: width * 0.2)
+        layout.scrollDirection = .vertical
         layout.sectionInset = UIEdgeInsets(top: sectionSpacing, left: sectionSpacing, bottom: sectionSpacing, right: sectionSpacing)
         return layout
     }
+    
+    
 }

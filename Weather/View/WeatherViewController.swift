@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 private enum TableViewCellType: Int, CaseIterable {
     case threehours
+    case fivedays
 }
 
 final class WeatherViewController: BaseViewController {
@@ -32,7 +33,9 @@ final class WeatherViewController: BaseViewController {
         view.backgroundColor = Color.backgroundColor
         view.delegate = self
         view.dataSource = self
+        view.separatorStyle = .none
         view.register(ThreeHoursTableViewCell.self, forCellReuseIdentifier: ThreeHoursTableViewCell.identifier)
+        view.register(FiveDaysTableViewCell.self, forCellReuseIdentifier: FiveDaysTableViewCell.identifier)
         self.view.addSubview(view)
         return view
     }()
@@ -110,6 +113,11 @@ private extension WeatherViewController {
             guard let self else { return }
             tableView.reloadData()
         }
+        
+        viewModel.outputWeekData.bind { [weak self] _ in
+            guard let self else { return }
+            tableView.reloadData()
+        }
     }
     
     @objc func mapButtonTapped() {
@@ -136,6 +144,13 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
             cell.collectionView.dataSource = self
             cell.collectionView.reloadData()
             return cell
+        case .fivedays:
+            let cell = tableView.dequeueReusableCell(withIdentifier: FiveDaysTableViewCell.identifier, for: indexPath) as! FiveDaysTableViewCell
+            cell.collectionView.tag = indexPath.row
+            cell.collectionView.delegate = self
+            cell.collectionView.dataSource = self
+            cell.collectionView.reloadData()
+            return cell
         }
     }
 }
@@ -148,6 +163,8 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
         switch collectionView.tag {
         case 0:
             return list.count
+        case 1:
+            return viewModel.outputWeekData.value.count
         default:
             return 0
         }
@@ -156,10 +173,14 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView.tag {
         case 0:
-            print("")
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThreeHoursCollectionViewCell.identifier, for: indexPath) as! ThreeHoursCollectionViewCell
             let data = viewModel.outputForeCastData.value?.list[indexPath.item]
-            cell.configure(data: data)
+            cell.configure(data: data, index: indexPath.item)
+            return cell
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MinMaxTempCollectionViewCell.identifier, for: indexPath) as! MinMaxTempCollectionViewCell
+            let data = viewModel.outputWeekData.value[indexPath.item]
+            cell.configure(data: data, index: indexPath.item)
             return cell
         default:
             return UICollectionViewCell()
