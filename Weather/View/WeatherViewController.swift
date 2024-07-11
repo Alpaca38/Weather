@@ -175,7 +175,7 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThreeHoursCollectionViewCell.identifier, for: indexPath) as! ThreeHoursCollectionViewCell
             let data = viewModel.outputForeCastData.value?.list[indexPath.item]
-            cell.configure(data: data, index: indexPath.item)
+            cell.configure(data: data)
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MinMaxTempCollectionViewCell.identifier, for: indexPath) as! MinMaxTempCollectionViewCell

@@ -38,13 +38,9 @@ final class ThreeHoursCollectionViewCell: BaseCollectionViewCell {
         }
     }
     
-    func configure(data: WeatherData?, index: Int) {
+    func configure(data: WeatherData?) {
         guard let data else { return }
-        if index == 0 {
-            timeLabel.text = "지금"
-        } else {
-            timeLabel.text = data.time
-        }
+        timeLabel.text = data.time
         imageView.kf.setImage(with: data.weather.first?.imageURL)
         tempLabel.text = data.main.tempString
     }

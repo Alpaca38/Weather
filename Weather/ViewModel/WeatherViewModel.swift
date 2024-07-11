@@ -31,25 +31,26 @@ final class WeatherViewModel {
     }
     
     private func getFiveDaysWeather(data: ForeCast) -> [DayWeather] {
-        var list: [DayWeather] = []
         let now = Date()
-        var groupedData: [String: [WeatherData]] = [:]
-        data.list.forEach {
-            let date = Date(timeIntervalSince1970: TimeInterval($0.dt))
+        let groupedData = Dictionary(grouping: data.list) { (weatherData) -> String in
+            let date = Date(timeIntervalSince1970: TimeInterval(weatherData.dt))
             let day = Calendar.current.startOfDay(for: date).formatted(.dateTime.weekday(.abbreviated).locale(Locale(identifier: "ko_KR")))
-            
-            if groupedData[day] == nil {
-                groupedData[day] = []
-            }
-            groupedData[day]?.append($0)
+            return day
         }
-        groupedData.forEach {
-            if let closestItem = $0.value.min(by: { Double($0.dt) - Date().timeIntervalSince1970 < Double($1.dt) - Date().timeIntervalSince1970 }) {
-                let dayWeather = DayWeather(day: $0.key, weatherIconURL: closestItem.weather.first?.imageURL, tempMin: closestItem.main.tempMin, tempMax: closestItem.main.tempMax, dt: closestItem.dt)
-                list.append(dayWeather)
+        
+        let dayWeathers = groupedData.compactMap { (day, items) -> DayWeather? in
+            guard let closestItem = items.min(by: {
+                Double($0.dt) - now.timeIntervalSince1970 < Double($1.dt) - now.timeIntervalSince1970
+            }) else {
+                return nil
             }
+            let weatherIconURL = closestItem.weather.first?.imageURL
+            let minTemp = items.map { $0.main.tempMin }.min() ?? 0.0
+            let maxTemp = items.map { $0.main.tempMax }.max() ?? 0.0
+            return DayWeather(day: day, weatherIconURL: weatherIconURL, tempMin: minTemp, tempMax: maxTemp, dt: closestItem.dt)
         }
-        return list.sorted { $0.dt < $1.dt }
+        
+        return dayWeathers.sorted { $0.dt < $1.dt }
     }
     
     private func requestForeCastWithId(id: Int) {
