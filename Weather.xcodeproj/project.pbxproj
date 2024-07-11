@@ -35,6 +35,10 @@
 		D10DAA322C3F59D5001F25FF /* FiveDaysTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA312C3F59D5001F25FF /* FiveDaysTableViewCell.swift */; };
 		D10DAA342C3F5B09001F25FF /* MinMaxTempCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA332C3F5B09001F25FF /* MinMaxTempCollectionViewCell.swift */; };
 		D10DAA3F2C3F98AB001F25FF /* DayWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA3E2C3F98AB001F25FF /* DayWeather.swift */; };
+		D10DAA452C3FDCC9001F25FF /* MapTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA442C3FDCC9001F25FF /* MapTableViewCell.swift */; };
+		D10DAA492C3FFFD3001F25FF /* WeatherDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA482C3FFFD3001F25FF /* WeatherDataTableViewCell.swift */; };
+		D10DAA4B2C4000AA001F25FF /* WeatherDataCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA4A2C4000AA001F25FF /* WeatherDataCollectionViewCell.swift */; };
+		D10DAA4E2C400ACE001F25FF /* WeatherDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA4D2C400ACE001F25FF /* WeatherDataType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +69,10 @@
 		D10DAA312C3F59D5001F25FF /* FiveDaysTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiveDaysTableViewCell.swift; sourceTree = "<group>"; };
 		D10DAA332C3F5B09001F25FF /* MinMaxTempCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinMaxTempCollectionViewCell.swift; sourceTree = "<group>"; };
 		D10DAA3E2C3F98AB001F25FF /* DayWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeather.swift; sourceTree = "<group>"; };
+		D10DAA442C3FDCC9001F25FF /* MapTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTableViewCell.swift; sourceTree = "<group>"; };
+		D10DAA482C3FFFD3001F25FF /* WeatherDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataTableViewCell.swift; sourceTree = "<group>"; };
+		D10DAA4A2C4000AA001F25FF /* WeatherDataCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataCollectionViewCell.swift; sourceTree = "<group>"; };
+		D10DAA4D2C400ACE001F25FF /* WeatherDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +109,7 @@
 		D10DA9E42C3E5FEF001F25FF /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				D10DAA4C2C400ABF001F25FF /* Enum */,
 				D10DAA2A2C3E98CD001F25FF /* Protocol */,
 				D10DAA222C3E7F3E001F25FF /* ViewModel */,
 				D10DAA1C2C3E7C45001F25FF /* Resource */,
@@ -190,6 +199,9 @@
 				D10DAA332C3F5B09001F25FF /* MinMaxTempCollectionViewCell.swift */,
 				D10DAA2D2C3EAD0D001F25FF /* ThreeHoursCollectionViewCell.swift */,
 				D10DAA312C3F59D5001F25FF /* FiveDaysTableViewCell.swift */,
+				D10DAA442C3FDCC9001F25FF /* MapTableViewCell.swift */,
+				D10DAA482C3FFFD3001F25FF /* WeatherDataTableViewCell.swift */,
+				D10DAA4A2C4000AA001F25FF /* WeatherDataCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -200,6 +212,14 @@
 				D10DAA2B2C3E98D6001F25FF /* ReuseIdentifier.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		D10DAA4C2C400ABF001F25FF /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				D10DAA4D2C400ACE001F25FF /* WeatherDataType.swift */,
+			);
+			path = Enum;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,6 +309,8 @@
 				D10DAA272C3E987B001F25FF /* ThreeHoursTableViewCell.swift in Sources */,
 				D10DAA212C3E7E7B001F25FF /* Observable.swift in Sources */,
 				D10DAA022C3E6123001F25FF /* BaseViewController.swift in Sources */,
+				D10DAA452C3FDCC9001F25FF /* MapTableViewCell.swift in Sources */,
+				D10DAA492C3FFFD3001F25FF /* WeatherDataTableViewCell.swift in Sources */,
 				D10DA9EA2C3E5FEF001F25FF /* WeatherViewController.swift in Sources */,
 				D10DAA2E2C3EAD0D001F25FF /* ThreeHoursCollectionViewCell.swift in Sources */,
 				D10DAA242C3E7F55001F25FF /* WeatherViewModel.swift in Sources */,
@@ -304,7 +326,9 @@
 				D10DA9FF2C3E6038001F25FF /* APIKey.swift in Sources */,
 				D10DAA322C3F59D5001F25FF /* FiveDaysTableViewCell.swift in Sources */,
 				D10DAA1B2C3E78C5001F25FF /* BaseLabel.swift in Sources */,
+				D10DAA4E2C400ACE001F25FF /* WeatherDataType.swift in Sources */,
 				D10DAA162C3E6CA4001F25FF /* CurrentWeather.swift in Sources */,
+				D10DAA4B2C4000AA001F25FF /* WeatherDataCollectionViewCell.swift in Sources */,
 				D10DA9E82C3E5FEF001F25FF /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

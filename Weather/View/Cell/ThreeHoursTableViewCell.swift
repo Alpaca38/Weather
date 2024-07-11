@@ -9,7 +9,11 @@ import UIKit
 import SnapKit
 
 final class ThreeHoursTableViewCell: BaseTableViewCell {
-    private let titleLabel = BaseLabel(font: .systemFont(ofSize: 18))
+    private let titleLabel = {
+        let view = BaseLabel(font: .systemFont(ofSize: 18))
+        view.text = "3시간 간격의 일기예보"
+        return view
+    }()
     
     lazy var collectionView = {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout())
@@ -28,10 +32,6 @@ final class ThreeHoursTableViewCell: BaseTableViewCell {
         return view
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configure()
-    }
     override func configureLayout() {
         customView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -40,7 +40,7 @@ final class ThreeHoursTableViewCell: BaseTableViewCell {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(14)
             $0.leading.equalToSuperview().offset(20)
-            $0.height.equalTo(40)
+            $0.height.equalTo(20)
         }
         
         collectionView.snp.makeConstraints {
@@ -49,10 +49,6 @@ final class ThreeHoursTableViewCell: BaseTableViewCell {
             $0.bottom.equalToSuperview()
             $0.height.equalTo(150)
         }
-    }
-    
-    func configure() {
-        titleLabel.text = "3시간 간격의 일기예보"
     }
 }
 

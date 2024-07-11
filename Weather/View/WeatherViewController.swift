@@ -7,10 +7,15 @@
 
 import UIKit
 import SnapKit
+import MapKit
 private enum TableViewCellType: Int, CaseIterable {
     case threehours
     case fivedays
+    case map
+    case weatherData
 }
+
+
 
 final class WeatherViewController: BaseViewController {
     private let viewModel = WeatherViewModel()
@@ -36,6 +41,8 @@ final class WeatherViewController: BaseViewController {
         view.separatorStyle = .none
         view.register(ThreeHoursTableViewCell.self, forCellReuseIdentifier: ThreeHoursTableViewCell.identifier)
         view.register(FiveDaysTableViewCell.self, forCellReuseIdentifier: FiveDaysTableViewCell.identifier)
+        view.register(MapTableViewCell.self, forCellReuseIdentifier: MapTableViewCell.identifier)
+        view.register(WeatherDataTableViewCell.self, forCellReuseIdentifier: WeatherDataTableViewCell.identifier)
         self.view.addSubview(view)
         return view
     }()
@@ -151,7 +158,28 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
             cell.collectionView.dataSource = self
             cell.collectionView.reloadData()
             return cell
+        case .map:
+            let cell = tableView.dequeueReusableCell(withIdentifier: MapTableViewCell.identifier, for: indexPath) as! MapTableViewCell
+            cell.mapView.delegate = self
+            cell.configure(data: viewModel.outputCurrentWeatherData.value)
+            return cell
+        case .weatherData:
+            let cell = tableView.dequeueReusableCell(withIdentifier: WeatherDataTableViewCell.identifier, for: indexPath) as! WeatherDataTableViewCell
+            cell.collectionView.tag = indexPath.row
+            cell.collectionView.delegate = self
+            cell.collectionView.dataSource = self
+            cell.collectionView.reloadData()
+            return cell
         }
+    }
+}
+
+extension WeatherViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: any MKAnnotation) -> MKAnnotationView? {
+        let annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: MKAnnotationView.identifier)
+        guard let humidity = viewModel.outputCurrentWeatherData.value?.main.humidity else { return MKAnnotationView() }
+        annotationView.glyphText = "\(humidity)"
+        return annotationView
     }
 }
 
@@ -165,6 +193,8 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
             return list.count
         case 1:
             return viewModel.outputWeekData.value.count
+        case 3:
+            return WeatherDataType.allCases.count
         default:
             return 0
         }
@@ -181,6 +211,11 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MinMaxTempCollectionViewCell.identifier, for: indexPath) as! MinMaxTempCollectionViewCell
             let data = viewModel.outputWeekData.value[indexPath.item]
             cell.configure(data: data, index: indexPath.item)
+            return cell
+        case 3:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherDataCollectionViewCell.identifier, for: indexPath) as! WeatherDataCollectionViewCell
+            let type = WeatherDataType(rawValue: indexPath.item)
+            cell.configure(data: viewModel.outputCurrentWeatherData.value, category: type)
             return cell
         default:
             return UICollectionViewCell()

@@ -13,6 +13,8 @@ struct CurrentWeather: Decodable {
     let weather: [Weather]
     let main: Main
     let name: String
+    let wind: Wind
+    let clouds: Clouds
 }
 
 // MARK: - Clouds

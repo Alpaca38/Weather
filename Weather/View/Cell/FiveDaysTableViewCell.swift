@@ -41,7 +41,7 @@ final class FiveDaysTableViewCell: BaseTableViewCell {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(14)
             $0.leading.equalToSuperview().offset(20)
-            $0.height.equalTo(40)
+            $0.height.equalTo(20)
         }
         
         collectionView.snp.makeConstraints {
