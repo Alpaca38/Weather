@@ -80,7 +80,8 @@ final class WeatherViewController: BaseViewController {
     
     override func configureLayout() {
         topView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         bottomView.snp.makeConstraints {

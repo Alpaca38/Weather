@@ -45,6 +45,8 @@
 		D10DAA562C4012AC001F25FF /* SearchCityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA552C4012AC001F25FF /* SearchCityViewModel.swift */; };
 		D10DAA582C401452001F25FF /* SearchCityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA572C401452001F25FF /* SearchCityTableViewCell.swift */; };
 		D10DAA5B2C4103CC001F25FF /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = D10DAA5A2C4103CC001F25FF /* Toast */; };
+		D10DAA5E2C410607001F25FF /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA5D2C410607001F25FF /* UserDefault.swift */; };
+		D10DAA602C410656001F25FF /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA5F2C410656001F25FF /* UserDefaultsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +86,8 @@
 		D10DAA532C40110B001F25FF /* CityList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityList.swift; sourceTree = "<group>"; };
 		D10DAA552C4012AC001F25FF /* SearchCityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCityViewModel.swift; sourceTree = "<group>"; };
 		D10DAA572C401452001F25FF /* SearchCityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCityTableViewCell.swift; sourceTree = "<group>"; };
+		D10DAA5D2C410607001F25FF /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
+		D10DAA5F2C410656001F25FF /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +125,7 @@
 		D10DA9E42C3E5FEF001F25FF /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				D10DAA5C2C4105FB001F25FF /* UserDefaults */,
 				D10DAA4C2C400ABF001F25FF /* Enum */,
 				D10DAA2A2C3E98CD001F25FF /* Protocol */,
 				D10DAA222C3E7F3E001F25FF /* ViewModel */,
@@ -239,6 +244,15 @@
 			path = Enum;
 			sourceTree = "<group>";
 		};
+		D10DAA5C2C4105FB001F25FF /* UserDefaults */ = {
+			isa = PBXGroup;
+			children = (
+				D10DAA5D2C410607001F25FF /* UserDefault.swift */,
+				D10DAA5F2C410656001F25FF /* UserDefaultsManager.swift */,
+			);
+			path = UserDefaults;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -329,11 +343,13 @@
 				D10DAA502C400B42001F25FF /* SearchCityViewController.swift in Sources */,
 				D10DAA212C3E7E7B001F25FF /* Observable.swift in Sources */,
 				D10DAA022C3E6123001F25FF /* BaseViewController.swift in Sources */,
+				D10DAA602C410656001F25FF /* UserDefaultsManager.swift in Sources */,
 				D10DAA452C3FDCC9001F25FF /* MapTableViewCell.swift in Sources */,
 				D10DAA492C3FFFD3001F25FF /* WeatherDataTableViewCell.swift in Sources */,
 				D10DA9EA2C3E5FEF001F25FF /* WeatherViewController.swift in Sources */,
 				D10DAA2E2C3EAD0D001F25FF /* ThreeHoursCollectionViewCell.swift in Sources */,
 				D10DAA242C3E7F55001F25FF /* WeatherViewModel.swift in Sources */,
+				D10DAA5E2C410607001F25FF /* UserDefault.swift in Sources */,
 				D10DA9E62C3E5FEF001F25FF /* AppDelegate.swift in Sources */,
 				D10DAA3F2C3F98AB001F25FF /* DayWeather.swift in Sources */,
 				D10DAA112C3E6A9F001F25FF /* NetworkManager.swift in Sources */,

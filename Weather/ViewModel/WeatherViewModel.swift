@@ -15,7 +15,7 @@ final class WeatherViewModel {
     var outputErrorMessage: Observable<String?> = Observable(nil)
     
     var inputViewDidLoadTriggger: Observable<Void?> = Observable(nil)
-    var inputCityID: Observable<Int> = Observable(1835847)
+    var inputCityID: Observable<Int> = Observable(UserDefaultsManager.shared.cityID)
     
     init() {
         inputViewDidLoadTriggger.bind(false) { [weak self] _ in
@@ -26,6 +26,7 @@ final class WeatherViewModel {
         
         inputCityID.bind(false) { [weak self] value in
             guard let self else { return }
+            UserDefaultsManager.shared.cityID = value
             requestCurrentWeatherWithID(id: value)
             requestForeCastWithId(id: value)
         }
