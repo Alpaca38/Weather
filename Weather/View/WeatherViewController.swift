@@ -134,7 +134,8 @@ private extension WeatherViewController {
     }
     
     @objc func mapButtonTapped() {
-        
+        let vc = MapViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func citySearchButtonTapped() {
