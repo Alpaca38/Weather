@@ -12,6 +12,7 @@ final class WeatherViewModel {
     var outputCurrentWeatherData: Observable<CurrentWeather?> = Observable(nil)
     var outputForeCastData: Observable<ForeCast?> = Observable(nil)
     var outputWeekData: Observable<[DayWeather]> = Observable([])
+    var outputErrorMessage: Observable<String?> = Observable(nil)
     
     var inputViewDidLoadTriggger: Observable<Void?> = Observable(nil)
     var inputCityID: Observable<Int> = Observable(1835847)
@@ -61,32 +62,7 @@ final class WeatherViewModel {
                 outputForeCastData.value = success
                 outputWeekData.value = getFiveDaysWeather(data: success)
             case .failure(let failure):
-                switch failure {
-                case .invalidRequestVariables:
-                    print(failure.rawValue)
-                case .invalidURL:
-                    print(failure.rawValue)
-                case .failedAuthentication:
-                    print(failure.rawValue)
-                case .invalidReauest:
-                    print(failure.rawValue)
-                case .invalidMethod:
-                    print(failure.rawValue)
-                case .requestLimit:
-                    print(failure.rawValue)
-                case .serverError:
-                    print(failure.rawValue)
-                case .networkDelay:
-                    print(failure.rawValue)
-                case .failedRequest:
-                    print(failure.rawValue)
-                case .invalidResponse:
-                    print(failure.rawValue)
-                case .noData:
-                    print(failure.rawValue)
-                case .invalidData:
-                    print(failure.rawValue)
-                }
+                outputErrorMessage.value = failure.rawValue
             }
         }
     }
@@ -98,32 +74,7 @@ final class WeatherViewModel {
             case .success(let success):
                 outputCurrentWeatherData.value = success
             case .failure(let failure):
-                switch failure {
-                case .invalidRequestVariables:
-                    print(failure.rawValue)
-                case .invalidURL:
-                    print(failure.rawValue)
-                case .failedAuthentication:
-                    print(failure.rawValue)
-                case .invalidReauest:
-                    print(failure.rawValue)
-                case .invalidMethod:
-                    print(failure.rawValue)
-                case .requestLimit:
-                    print(failure.rawValue)
-                case .serverError:
-                    print(failure.rawValue)
-                case .networkDelay:
-                    print(failure.rawValue)
-                case .failedRequest:
-                    print(failure.rawValue)
-                case .invalidResponse:
-                    print(failure.rawValue)
-                case .noData:
-                    print(failure.rawValue)
-                case .invalidData:
-                    print(failure.rawValue)
-                }
+                outputErrorMessage.value = failure.rawValue
             }
         }
     }

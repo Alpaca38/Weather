@@ -6,16 +6,16 @@
 //
 
 import UIKit
-import SnapKit
 import MapKit
+import SnapKit
+import Toast
+
 private enum TableViewCellType: Int, CaseIterable {
     case threehours
     case fivedays
     case map
     case weatherData
 }
-
-
 
 final class WeatherViewController: BaseViewController {
     private let viewModel = WeatherViewModel()
@@ -124,6 +124,11 @@ private extension WeatherViewController {
         viewModel.outputWeekData.bind { [weak self] _ in
             guard let self else { return }
             tableView.reloadData()
+        }
+        
+        viewModel.outputErrorMessage.bind { [weak self] in
+            guard let self else { return }
+            view.makeToast($0, duration: 3, position: .center)
         }
     }
     
