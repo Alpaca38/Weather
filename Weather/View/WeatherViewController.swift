@@ -135,6 +135,10 @@ private extension WeatherViewController {
     
     @objc func mapButtonTapped() {
         let vc = MapViewController()
+        vc.sendCoord = { [weak self] coord in
+            guard let self else { return }
+            viewModel.inputCityCoord.value = coord
+        }
         navigationController?.pushViewController(vc, animated: true)
     }
     

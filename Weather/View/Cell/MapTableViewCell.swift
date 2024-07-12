@@ -52,16 +52,14 @@ final class MapTableViewCell: BaseTableViewCell {
         guard let data else { return }
         mapView.setCenter(CLLocationCoordinate2D(latitude: data.coord.lat, longitude: data.coord.lon), animated: true)
         
-        createAnnotations(data: data)
+        createAnnotation(data: data)
     }
     
-    private func createAnnotations(data: CurrentWeather) {
+    private func createAnnotation(data: CurrentWeather) {
         mapView.removeAnnotations(mapView.annotations)
         
-        var annotations: [MKAnnotation] = []
         let annotation = MKPointAnnotation()
         annotation.coordinate = CLLocationCoordinate2D(latitude: data.coord.lat , longitude: data.coord.lon)
-        annotations.append(annotation)
-        mapView.addAnnotations(annotations)
+        mapView.addAnnotation(annotation)
     }
 }
