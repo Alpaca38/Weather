@@ -56,6 +56,8 @@ final class MapTableViewCell: BaseTableViewCell {
     }
     
     private func createAnnotations(data: CurrentWeather) {
+        mapView.removeAnnotations(mapView.annotations)
+        
         var annotations: [MKAnnotation] = []
         let annotation = MKPointAnnotation()
         annotation.coordinate = CLLocationCoordinate2D(latitude: data.coord.lat , longitude: data.coord.lon)

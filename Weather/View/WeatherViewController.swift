@@ -133,6 +133,10 @@ private extension WeatherViewController {
     
     @objc func citySearchButtonTapped() {
         let vc = SearchCityViewController()
+        vc.sendCityID = { [weak self] id in
+            guard let self else { return }
+            viewModel.inputCityID.value = id
+        }
         navigationController?.pushViewController(vc, animated: true)
     }
 }

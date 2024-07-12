@@ -21,6 +21,8 @@ final class SearchCityViewController: BaseViewController {
         return view
     }()
     
+    var sendCityID: ((Int) -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.inputViewDidLoadTrigger.value = ()
@@ -78,5 +80,11 @@ extension SearchCityViewController: UITableViewDelegate, UITableViewDataSource {
         let data = viewModel.outputCityData.value[indexPath.row]
         cell.configure(data: data)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let data = viewModel.outputCityData.value[indexPath.row]
+        sendCityID?(data.id)
+        navigationController?.popViewController(animated: true)
     }
 }
