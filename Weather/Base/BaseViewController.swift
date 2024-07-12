@@ -10,8 +10,8 @@ import UIKit
 class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
         navigationItem.backButtonDisplayMode = .minimal
+        navigationController?.navigationBar.tintColor = .white
         configureLayout()
     }
     

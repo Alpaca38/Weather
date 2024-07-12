@@ -13,7 +13,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationBarAppearance.backgroundColor = .black
+        UINavigationBar.appearance().standardAppearance = navigationBarAppearance
+        
         return true
     }
 
