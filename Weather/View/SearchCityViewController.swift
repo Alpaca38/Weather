@@ -26,6 +26,7 @@ final class SearchCityViewController: BaseViewController {
         viewModel.inputViewDidLoadTrigger.value = ()
         setNavi()
         setSearchController()
+        bindData()
     }
     
     override func configureLayout() {
@@ -62,6 +63,8 @@ private extension SearchCityViewController {
 extension SearchCityViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         print(searchController.searchBar.text!)
+        guard let text = searchController.searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
+        viewModel.inputSearch.value = text
     }
 }
 
