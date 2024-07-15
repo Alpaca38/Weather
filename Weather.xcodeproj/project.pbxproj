@@ -130,15 +130,11 @@
 			isa = PBXGroup;
 			children = (
 				D10DAA632C410F9B001F25FF /* Extension */,
-				D10DAA5C2C4105FB001F25FF /* UserDefaults */,
-				D10DAA4C2C400ABF001F25FF /* Enum */,
 				D10DAA2A2C3E98CD001F25FF /* Protocol */,
 				D10DAA222C3E7F3E001F25FF /* ViewModel */,
 				D10DAA1C2C3E7C45001F25FF /* Resource */,
 				D10DAA192C3E759A001F25FF /* View */,
 				D10DAA142C3E6C9E001F25FF /* Model */,
-				D10DAA032C3E6459001F25FF /* Network */,
-				D10DAA002C3E611B001F25FF /* Base */,
 				D10DA9FD2C3E602E001F25FF /* API */,
 				D10DA9E52C3E5FEF001F25FF /* AppDelegate.swift */,
 				D10DA9E72C3E5FEF001F25FF /* SceneDelegate.swift */,
@@ -182,10 +178,13 @@
 		D10DAA142C3E6C9E001F25FF /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D10DAA5C2C4105FB001F25FF /* UserDefaults */,
+				D10DAA032C3E6459001F25FF /* Network */,
 				D10DAA152C3E6CA4001F25FF /* CurrentWeather.swift */,
 				D10DAA172C3E7255001F25FF /* ForeCast.swift */,
 				D10DAA3E2C3F98AB001F25FF /* DayWeather.swift */,
 				D10DAA532C40110B001F25FF /* CityList.swift */,
+				D10DAA4D2C400ACE001F25FF /* WeatherDataType.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -193,6 +192,7 @@
 		D10DAA192C3E759A001F25FF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D10DAA002C3E611B001F25FF /* Base */,
 				D10DAA252C3E9871001F25FF /* Cell */,
 				D10DA9E92C3E5FEF001F25FF /* WeatherViewController.swift */,
 				D10DAA4F2C400B42001F25FF /* SearchCityViewController.swift */,
@@ -240,14 +240,6 @@
 				D10DAA2B2C3E98D6001F25FF /* ReuseIdentifier.swift */,
 			);
 			path = Protocol;
-			sourceTree = "<group>";
-		};
-		D10DAA4C2C400ABF001F25FF /* Enum */ = {
-			isa = PBXGroup;
-			children = (
-				D10DAA4D2C400ACE001F25FF /* WeatherDataType.swift */,
-			);
-			path = Enum;
 			sourceTree = "<group>";
 		};
 		D10DAA5C2C4105FB001F25FF /* UserDefaults */ = {
