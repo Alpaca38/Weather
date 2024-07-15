@@ -16,3 +16,38 @@ struct CityListElement: Decodable {
 }
 
 typealias CityList = [CityListElement]
+
+extension CityList {
+    static func getCityData() -> CityList {
+        guard let path = Bundle.main.path(forResource: "CityList", ofType: "json") else {
+            return []
+        }
+        guard let jsonString = try? String(contentsOfFile: path) else {
+            return []
+        }
+
+        let decoder = JSONDecoder()
+        let data = jsonString.data(using: .utf8)
+        
+        guard let data, let cityData = try? decoder.decode(CityList.self, from: data) else { return [] }
+        
+        return cityData
+    }
+    
+    static func getSearchCityData(_ text: String) -> CityList {
+        guard let path = Bundle.main.path(forResource: "CityList", ofType: "json") else {
+            return []
+        }
+        guard let jsonString = try? String(contentsOfFile: path) else {
+            return []
+        }
+        
+        let decoder = JSONDecoder()
+        let data = jsonString.data(using: .utf8)
+        guard let data, let cityData = try? decoder.decode(CityList.self, from: data) else { return [] }
+        let filter = cityData.filter {
+            $0.name.localizedCaseInsensitiveContains(text)
+        }
+        return text.isEmpty ? cityData : filter
+    }
+}
