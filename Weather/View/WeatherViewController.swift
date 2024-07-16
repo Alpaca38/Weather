@@ -15,6 +15,19 @@ private enum TableViewCellType: Int, CaseIterable {
     case fivedays
     case map
     case weatherData
+    
+    var height: CGFloat {
+        switch self {
+        case .threehours:
+            return 220
+        case .fivedays:
+            return 500
+        case .map:
+            return 270
+        case .weatherData:
+            return 420
+        }
+    }
 }
 
 final class WeatherViewController: BaseViewController {
@@ -188,6 +201,11 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
             cell.collectionView.reloadData()
             return cell
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let cellType = TableViewCellType.allCases[indexPath.row]
+        return cellType.height
     }
 }
 

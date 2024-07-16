@@ -33,7 +33,8 @@ final class MapTableViewCell: BaseTableViewCell {
     
     override func configureLayout() {
         customView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(250)
         }
         
         titleLabel.snp.makeConstraints {
@@ -44,7 +45,6 @@ final class MapTableViewCell: BaseTableViewCell {
         mapView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
             $0.horizontalEdges.bottom.equalToSuperview().inset(20)
-            $0.height.equalTo(200)
         }
     }
     

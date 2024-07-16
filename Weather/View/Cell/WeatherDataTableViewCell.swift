@@ -19,7 +19,7 @@ final class WeatherDataTableViewCell: BaseTableViewCell {
     
     override func configureLayout() {
         collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(400)
         }
     }
