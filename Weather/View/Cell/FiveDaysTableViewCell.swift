@@ -36,7 +36,7 @@ final class FiveDaysTableViewCell: BaseTableViewCell {
     override func configureLayout() {
         customView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(480)
+            $0.height.equalTo(400)
         }
         
         titleLabel.snp.makeConstraints {

@@ -21,7 +21,7 @@ private enum TableViewCellType: Int, CaseIterable {
         case .threehours:
             return 220
         case .fivedays:
-            return 500
+            return 420
         case .map:
             return 270
         case .weatherData:
@@ -43,7 +43,7 @@ final class WeatherViewController: BaseViewController {
         view.alignment = .center
         view.distribution = .equalSpacing
         view.spacing = 4
-        self.view.addSubview(view)
+//        self.view.addSubview(view)
         return view
     }()
     private lazy var tableView = {
@@ -53,6 +53,8 @@ final class WeatherViewController: BaseViewController {
         view.dataSource = self
         view.separatorStyle = .none
         view.showsVerticalScrollIndicator = false
+        topView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 200)
+        view.tableHeaderView = topView
         view.register(ThreeHoursTableViewCell.self, forCellReuseIdentifier: ThreeHoursTableViewCell.identifier)
         view.register(FiveDaysTableViewCell.self, forCellReuseIdentifier: FiveDaysTableViewCell.identifier)
         view.register(MapTableViewCell.self, forCellReuseIdentifier: MapTableViewCell.identifier)
@@ -93,11 +95,11 @@ final class WeatherViewController: BaseViewController {
     }
     
     override func configureLayout() {
-        topView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
-        }
-        
+//        topView.snp.makeConstraints {
+//            $0.top.equalTo(view.safeAreaLayoutGuide)
+//            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+//        }
+       
         bottomView.snp.makeConstraints {
             $0.bottom.horizontalEdges.equalToSuperview()
             $0.height.equalTo(80)
@@ -114,8 +116,9 @@ final class WeatherViewController: BaseViewController {
         }
         
         tableView.snp.makeConstraints {
-            $0.top.equalTo(topView.snp.bottom).offset(20)
-            $0.horizontalEdges.equalTo(topView)
+//            $0.top.equalTo(topView.snp.bottom).offset(20)
+//            $0.horizontalEdges.equalTo(topView)
+            $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
             $0.bottom.equalTo(bottomView.snp.top)
         }
     }
@@ -206,6 +209,10 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellType = TableViewCellType.allCases[indexPath.row]
         return cellType.height
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return 200
     }
 }
 
