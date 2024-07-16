@@ -43,14 +43,12 @@ final class SearchCityTableViewCell: BaseTableViewCell {
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(hashTagLabel)
             $0.leading.equalTo(hashTagLabel.snp.trailing).offset(10)
-            $0.height.equalTo(20)
         }
         
         countryLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
             $0.leading.equalTo(titleLabel)
             $0.bottom.equalToSuperview().offset(-10)
-            $0.height.equalTo(30)
         }
     }
     
