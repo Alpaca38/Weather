@@ -49,6 +49,7 @@
 		D10DAA602C410656001F25FF /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA5F2C410656001F25FF /* UserDefaultsManager.swift */; };
 		D10DAA622C410A4A001F25FF /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA612C410A4A001F25FF /* MapViewController.swift */; };
 		D10DAA652C410FB2001F25FF /* Extention+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA642C410FB2001F25FF /* Extention+UIViewController.swift */; };
+		D10DAA922C46A4D0001F25FF /* WeatherTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10DAA912C46A4D0001F25FF /* WeatherTableViewHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +93,7 @@
 		D10DAA5F2C410656001F25FF /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		D10DAA612C410A4A001F25FF /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D10DAA642C410FB2001F25FF /* Extention+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extention+UIViewController.swift"; sourceTree = "<group>"; };
+		D10DAA912C46A4D0001F25FF /* WeatherTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherTableViewHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +199,7 @@
 				D10DA9E92C3E5FEF001F25FF /* WeatherViewController.swift */,
 				D10DAA4F2C400B42001F25FF /* SearchCityViewController.swift */,
 				D10DAA612C410A4A001F25FF /* MapViewController.swift */,
+				D10DAA912C46A4D0001F25FF /* WeatherTableViewHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -346,6 +349,7 @@
 				D10DAA292C3E98C3001F25FF /* BaseTableViewCell.swift in Sources */,
 				D10DAA342C3F5B09001F25FF /* MinMaxTempCollectionViewCell.swift in Sources */,
 				D10DAA272C3E987B001F25FF /* ThreeHoursTableViewCell.swift in Sources */,
+				D10DAA922C46A4D0001F25FF /* WeatherTableViewHeaderView.swift in Sources */,
 				D10DAA502C400B42001F25FF /* SearchCityViewController.swift in Sources */,
 				D10DAA212C3E7E7B001F25FF /* Observable.swift in Sources */,
 				D10DAA022C3E6123001F25FF /* BaseViewController.swift in Sources */,

@@ -37,24 +37,14 @@ final class WeatherViewController: BaseViewController {
     private let descriptionLabel = BaseLabel(font: .systemFont(ofSize: 24))
     private let tempMinMaxLabel = BaseLabel(font: .systemFont(ofSize: 23))
     
-    private lazy var topView = {
-        let view = UIStackView(arrangedSubviews: [cityLabel, tempLabel, descriptionLabel, tempMinMaxLabel])
-        view.axis = .vertical
-        view.alignment = .center
-        view.distribution = .equalSpacing
-        view.spacing = 4
-//        self.view.addSubview(view)
-        return view
-    }()
     private lazy var tableView = {
-        let view = UITableView()
+        let view = UITableView(frame: .zero, style: .grouped)
         view.backgroundColor = Color.backgroundColor
         view.delegate = self
         view.dataSource = self
         view.separatorStyle = .none
         view.showsVerticalScrollIndicator = false
-        topView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 200)
-        view.tableHeaderView = topView
+        view.register(WeatherTableViewHeaderView.self, forHeaderFooterViewReuseIdentifier: WeatherTableViewHeaderView.identifier)
         view.register(ThreeHoursTableViewCell.self, forCellReuseIdentifier: ThreeHoursTableViewCell.identifier)
         view.register(FiveDaysTableViewCell.self, forCellReuseIdentifier: FiveDaysTableViewCell.identifier)
         view.register(MapTableViewCell.self, forCellReuseIdentifier: MapTableViewCell.identifier)
@@ -95,11 +85,6 @@ final class WeatherViewController: BaseViewController {
     }
     
     override func configureLayout() {
-//        topView.snp.makeConstraints {
-//            $0.top.equalTo(view.safeAreaLayoutGuide)
-//            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
-//        }
-       
         bottomView.snp.makeConstraints {
             $0.bottom.horizontalEdges.equalToSuperview()
             $0.height.equalTo(80)
@@ -116,8 +101,6 @@ final class WeatherViewController: BaseViewController {
         }
         
         tableView.snp.makeConstraints {
-//            $0.top.equalTo(topView.snp.bottom).offset(20)
-//            $0.horizontalEdges.equalTo(topView)
             $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
             $0.bottom.equalTo(bottomView.snp.top)
         }
@@ -126,12 +109,10 @@ final class WeatherViewController: BaseViewController {
 
 private extension WeatherViewController {
     func bindData() {
-        viewModel.outputCurrentWeatherData.bind { [weak self] in
-            guard let self else { return }
-            cityLabel.text = $0?.name
-            tempLabel.text = $0?.main.tempString
-            descriptionLabel.text = $0?.weather.first?.description
-            tempMinMaxLabel.text = $0?.main.tempMinMaxString
+        viewModel.outputCurrentWeatherData.bind { [weak self] data in
+            guard let self, let data else { return }
+            let header = tableView.headerView(forSection: 0) as! WeatherTableViewHeaderView
+            header.configure(data: data)
         }
         
         viewModel.outputForeCastData.bind { [weak self] _ in
@@ -211,8 +192,12 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
         return cellType.height
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 200
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let weatherTableViewHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: WeatherTableViewHeaderView.identifier) as? WeatherTableViewHeaderView else {
+            return UIView()
+        }
+        
+        return weatherTableViewHeaderView
     }
 }
 
