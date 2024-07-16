@@ -53,7 +53,6 @@ private extension SearchCityViewController {
     func setSearchController() {
         searchController.searchBar.tintColor = .white
         searchController.searchBar.placeholder = "도시를 검색할 수 있습니다."
-        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchResultsUpdater = self
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
