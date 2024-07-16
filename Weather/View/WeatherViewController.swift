@@ -39,6 +39,7 @@ final class WeatherViewController: BaseViewController {
         view.delegate = self
         view.dataSource = self
         view.separatorStyle = .none
+        view.showsVerticalScrollIndicator = false
         view.register(ThreeHoursTableViewCell.self, forCellReuseIdentifier: ThreeHoursTableViewCell.identifier)
         view.register(FiveDaysTableViewCell.self, forCellReuseIdentifier: FiveDaysTableViewCell.identifier)
         view.register(MapTableViewCell.self, forCellReuseIdentifier: MapTableViewCell.identifier)
@@ -127,9 +128,9 @@ private extension WeatherViewController {
             tableView.reloadData()
         }
         
-        viewModel.outputErrorMessage.bind { [weak self] in
-            guard let self else { return }
-            view.makeToast($0, duration: 3, position: .center)
+        viewModel.outputErrorMessage.bind { [weak self] message in
+            guard let self, let message else { return }
+            view.makeToast(message, duration: 3, position: .center)
         }
     }
     
