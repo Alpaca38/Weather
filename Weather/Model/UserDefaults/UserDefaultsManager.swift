@@ -12,6 +12,6 @@ final class UserDefaultsManager {
     static let shared = UserDefaultsManager()
     
     @UserDefault(key: .cityID, defaultValue: 1835847, isCustomObject: false)
-    var cityID: Int!
+    var cityID: Int
     
 }

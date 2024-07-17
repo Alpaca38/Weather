@@ -13,11 +13,11 @@ struct UserDefault<T: Codable> {
         case cityID
     }
     let key: UserDefaultKeys
-    let defaultValue: T?
+    let defaultValue: T
     let isCustomObject: Bool
     let userDefaults = UserDefaults.standard
     
-    var wrappedValue: T? {
+    var wrappedValue: T {
         get {
             if isCustomObject {
                 guard let data = self.userDefaults.object(forKey: key.rawValue) as? Data else { return defaultValue }
