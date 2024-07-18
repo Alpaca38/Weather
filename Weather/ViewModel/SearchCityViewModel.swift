@@ -13,15 +13,17 @@ final class SearchCityViewModel {
     var inputViewDidLoadTrigger: Observable<Void?> = Observable(nil)
     var inputSearch = Observable("")
     
+    let cityList = CityList()
+    
     init() {
         inputViewDidLoadTrigger.bind(false) { [weak self] _ in
             guard let self else { return }
-            outputCityData.value = CityList.getCityData()
+            outputCityData.value = cityList.getCityData()
         }
         
         inputSearch.bind(false) { [weak self] in
             guard let self else { return }
-            outputCityData.value = CityList.getSearchCityData($0)
+            outputCityData.value = cityList.getSearchCityData($0)
         }
     }
 }

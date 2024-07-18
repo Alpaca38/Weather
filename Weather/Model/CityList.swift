@@ -18,7 +18,7 @@ struct CityListElement: Decodable {
 typealias CityList = [CityListElement]
 
 extension CityList {
-    static func getCityData() -> CityList {
+     func getCityData() -> CityList {
         guard let path = Bundle.main.path(forResource: "CityList", ofType: "json") else {
             return []
         }
@@ -34,7 +34,7 @@ extension CityList {
         return cityData
     }
     
-    static func getSearchCityData(_ text: String) -> CityList {
+    func getSearchCityData(_ text: String) -> CityList {
         guard let path = Bundle.main.path(forResource: "CityList", ofType: "json") else {
             return []
         }
