@@ -31,7 +31,8 @@ final class WeatherTableViewHeaderView: UITableViewHeaderFooterView {
     
     func configureLayout() {
         topView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(20)
+            $0.top.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(20)
         }
     }
     

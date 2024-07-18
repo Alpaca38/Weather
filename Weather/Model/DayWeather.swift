@@ -28,7 +28,7 @@ struct DayWeather {
 typealias DayWeatherList = [DayWeather]
 
 extension DayWeatherList {
-    static func getFiveDaysWeather(data: ForeCast) -> DayWeatherList {
+    func getFiveDaysWeather(data: ForeCast) -> DayWeatherList {
         let now = Date()
         let groupedData = Dictionary(grouping: data.list) { (weatherData) -> String in
             let date = Date(timeIntervalSince1970: TimeInterval(weatherData.dt))

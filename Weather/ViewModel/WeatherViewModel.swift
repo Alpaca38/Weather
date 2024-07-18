@@ -44,7 +44,7 @@ final class WeatherViewModel {
             switch result {
             case .success(let success):
                 outputForeCastData.value = success
-                outputWeekData.value = DayWeatherList.getFiveDaysWeather(data: success)
+                outputWeekData.value = DayWeatherList().getFiveDaysWeather(data: success)
             case .failure(let failure):
                 outputErrorMessage.value = failure.rawValue
             }

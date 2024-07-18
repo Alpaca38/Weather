@@ -72,11 +72,6 @@ struct Snow: Decodable {
     }
 }
 
-// MARK: - Sys
-struct Sys: Decodable {
-    
-}
-
 // MARK: - Weather
 struct Weather: Decodable {
     let id: Int

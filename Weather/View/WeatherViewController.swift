@@ -199,6 +199,10 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
         
         return weatherTableViewHeaderView
     }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return 200
+    }
 }
 
 extension WeatherViewController: MKMapViewDelegate {
