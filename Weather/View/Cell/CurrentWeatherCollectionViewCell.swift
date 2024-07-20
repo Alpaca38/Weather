@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class WeatherTableViewHeaderView: UITableViewHeaderFooterView {
+final class CurrentWeatherCollectionViewCell: UICollectionViewCell {
     private let viewModel = WeatherViewModel()
     private let cityLabel = BaseLabel(font: .systemFont(ofSize: 32))
     private let tempLabel = BaseLabel(font: .systemFont(ofSize: 70))
@@ -24,8 +24,8 @@ final class WeatherTableViewHeaderView: UITableViewHeaderFooterView {
         return view
     }()
     
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         configureLayout()
     }
     

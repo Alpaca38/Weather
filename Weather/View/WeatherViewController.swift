@@ -10,24 +10,35 @@ import MapKit
 import SnapKit
 import Toast
 
-private enum TableViewCellType: Int, CaseIterable {
+private enum WeatherSection: Int, CaseIterable {
+    case currentWeather
     case threehours
     case fivedays
     case map
     case weatherData
     
-    var height: CGFloat {
+    var headerTitle: String {
         switch self {
+        case .currentWeather:
+            return ""
         case .threehours:
-            return 220
+            return "3시간 간격의 일기예보"
         case .fivedays:
-            return 420
+            return "5일 간의 일기예보"
         case .map:
-            return 270
+            return "습도"
         case .weatherData:
-            return 420
+            return ""
         }
     }
+}
+
+private enum WeatherItem: Hashable {
+    case currentWeatherData(CurrentWeather)
+    case threeHourForecast(WeatherData)
+    case fiveDayForecast(DayWeather)
+    case mapData(CurrentWeather)
+    case weatherData([WeatherDataType: String])
 }
 
 final class WeatherViewController: BaseViewController {
@@ -37,21 +48,17 @@ final class WeatherViewController: BaseViewController {
     private let descriptionLabel = BaseLabel(font: .systemFont(ofSize: 24))
     private let tempMinMaxLabel = BaseLabel(font: .systemFont(ofSize: 23))
     
-    private lazy var tableView = {
-        let view = UITableView(frame: .zero, style: .grouped)
+    private lazy var collectionView = {
+        let view = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         view.backgroundColor = Color.backgroundColor
-        view.delegate = self
-        view.dataSource = self
-        view.separatorStyle = .none
         view.showsVerticalScrollIndicator = false
-        view.register(WeatherTableViewHeaderView.self, forHeaderFooterViewReuseIdentifier: WeatherTableViewHeaderView.identifier)
-        view.register(ThreeHoursTableViewCell.self, forCellReuseIdentifier: ThreeHoursTableViewCell.identifier)
-        view.register(FiveDaysTableViewCell.self, forCellReuseIdentifier: FiveDaysTableViewCell.identifier)
-        view.register(MapTableViewCell.self, forCellReuseIdentifier: MapTableViewCell.identifier)
-        view.register(WeatherDataTableViewCell.self, forCellReuseIdentifier: WeatherDataTableViewCell.identifier)
         self.view.addSubview(view)
         return view
     }()
+    
+    private var dataSource: UICollectionViewDiffableDataSource<WeatherSection, WeatherItem>!
+    private var snapshot = NSDiffableDataSourceSnapshot<WeatherSection, WeatherItem>()
+    
     private lazy var mapButton = {
         let view = UIButton()
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .light)
@@ -81,6 +88,7 @@ final class WeatherViewController: BaseViewController {
         super.viewDidLoad()
         view.backgroundColor = Color.backgroundColor
         viewModel.inputViewDidLoadTriggger.value = ()
+        configureDataSource()
         bindData()
     }
     
@@ -100,35 +108,118 @@ final class WeatherViewController: BaseViewController {
             $0.trailing.equalToSuperview().offset(-20)
         }
         
-        tableView.snp.makeConstraints {
+        collectionView.snp.makeConstraints {
             $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
             $0.bottom.equalTo(bottomView.snp.top)
         }
     }
 }
 
+// MARK: Compostional Layout
 private extension WeatherViewController {
-    func bindData() {
-        viewModel.outputCurrentWeatherData.bind { [weak self] data in
-            guard let self, let data else { return }
-            let header = tableView.headerView(forSection: 0) as! WeatherTableViewHeaderView
-            header.configure(data: data)
+    func createLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, environment -> NSCollectionLayoutSection? in
+            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44))
+            let header = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerSize,
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top)
+            
+            let sectionType = WeatherSection.allCases[sectionIndex]
+            switch sectionType {
+            case .currentWeather:
+                return self?.createCurrentWeatherSection()
+            case .threehours:
+                let section = self?.createThreeHoursSection()
+                section?.boundarySupplementaryItems = [header]
+                return section
+            case .fivedays:
+                let section = self?.createFiveDaysSection()
+                section?.boundarySupplementaryItems = [header]
+                return section
+            case .map:
+                return self?.createMapSection()
+            case .weatherData:
+                return self?.createWeatherDataSection()
+            }
         }
+        layout.register(BackgroundDecorationView.self, forDecorationViewOfKind: BackgroundDecorationView.identifier)
+        return layout
+    }
+    
+    func createCurrentWeatherSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        viewModel.outputForeCastData.bind { [weak self] _ in
-            guard let self else { return }
-            tableView.reloadData()
-        }
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(200))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
-        viewModel.outputWeekData.bind { [weak self] _ in
-            guard let self else { return }
-            tableView.reloadData()
-        }
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
         
-        viewModel.outputErrorMessage.bind { [weak self] message in
-            guard let self, let message else { return }
-            view.makeToast(message, duration: 3, position: .center)
-        }
+        return section
+    }
+    
+    func createThreeHoursSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.25), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.25 * 1.3))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(16)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 40, trailing: 20)
+        section.orthogonalScrollingBehavior = .continuous
+        
+        let decorationItem = NSCollectionLayoutDecorationItem.background(elementKind: BackgroundDecorationView.identifier)
+        decorationItem.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
+        section.decorationItems = [decorationItem]
+        
+        return section
+    }
+    
+    func createFiveDaysSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(80))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(80))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(16)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20)
+        
+        let decorationItem = NSCollectionLayoutDecorationItem.background(elementKind: BackgroundDecorationView.identifier)
+        decorationItem.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
+        section.decorationItems = [decorationItem]
+        
+        return section
+    }
+    
+    func createMapSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(200))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(200))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
+        return section
+    }
+    
+    func createWeatherDataSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.5))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(16)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 50, leading: 0, bottom: 0, trailing: 0)
+        return section
     }
     
     @objc func mapButtonTapped() {
@@ -150,58 +241,107 @@ private extension WeatherViewController {
     }
 }
 
-extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return TableViewCellType.allCases.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellType = TableViewCellType.allCases[indexPath.row]
-        switch cellType {
-        case .threehours:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ThreeHoursTableViewCell.identifier, for: indexPath) as! ThreeHoursTableViewCell
-            cell.collectionView.tag = indexPath.row
-            cell.collectionView.delegate = self
-            cell.collectionView.dataSource = self
-            cell.collectionView.reloadData()
-            return cell
-        case .fivedays:
-            let cell = tableView.dequeueReusableCell(withIdentifier: FiveDaysTableViewCell.identifier, for: indexPath) as! FiveDaysTableViewCell
-            cell.collectionView.tag = indexPath.row
-            cell.collectionView.delegate = self
-            cell.collectionView.dataSource = self
-            cell.collectionView.reloadData()
-            return cell
-        case .map:
-            let cell = tableView.dequeueReusableCell(withIdentifier: MapTableViewCell.identifier, for: indexPath) as! MapTableViewCell
-            cell.mapView.delegate = self
-            cell.configure(data: viewModel.outputCurrentWeatherData.value)
-            return cell
-        case .weatherData:
-            let cell = tableView.dequeueReusableCell(withIdentifier: WeatherDataTableViewCell.identifier, for: indexPath) as! WeatherDataTableViewCell
-            cell.collectionView.tag = indexPath.row
-            cell.collectionView.delegate = self
-            cell.collectionView.dataSource = self
-            cell.collectionView.reloadData()
-            return cell
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cellType = TableViewCellType.allCases[indexPath.row]
-        return cellType.height
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let weatherTableViewHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: WeatherTableViewHeaderView.identifier) as? WeatherTableViewHeaderView else {
-            return UIView()
+// MARK: Data binding
+private extension WeatherViewController {
+    func bindData() {
+        snapshot.appendSections(WeatherSection.allCases)
+        viewModel.outputCurrentWeatherData.bind { [weak self] data in
+            guard let data, let self else { return }
+            snapshot.deleteItems(snapshot.itemIdentifiers(inSection: .currentWeather))
+            snapshot.appendItems([.currentWeatherData(data)], toSection: .currentWeather)
+            
+            snapshot.deleteItems(snapshot.itemIdentifiers(inSection: .map))
+            snapshot.appendItems([.mapData(data)], toSection: .map)
+            
+            var weatherDataItems: [WeatherItem] = []
+            WeatherDataType.allCases.forEach {
+                let value = $0.value(from: data)
+                weatherDataItems.append(.weatherData([$0: value]))
+            }
+            snapshot.deleteItems(snapshot.itemIdentifiers(inSection: .weatherData))
+            snapshot.appendItems(weatherDataItems, toSection: .weatherData)
+            
+            dataSource.apply(snapshot)
         }
         
-        return weatherTableViewHeaderView
+        viewModel.outputForeCastData.bind { [weak self] data in
+            guard let data, let self else { return }
+            snapshot.deleteItems(snapshot.itemIdentifiers(inSection: .threehours))
+            snapshot.appendItems(data.list.map { .threeHourForecast($0) }, toSection: .threehours) // [WeatherItem]
+            
+            dataSource.apply(snapshot)
+        }
+        
+        viewModel.outputWeekData.bind { [weak self] data in
+            guard let self else { return }
+            snapshot.deleteItems(snapshot.itemIdentifiers(inSection: .fivedays))
+            snapshot.appendItems(data.map { .fiveDayForecast($0) }, toSection: .fivedays)
+            
+            dataSource.apply(snapshot)
+        }
+        
+        viewModel.outputErrorMessage.bind { [weak self] message in
+            guard let self, let message else { return }
+            view.makeToast(message, duration: 3, position: .center)
+        }
     }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 200
+}
+
+// MARK: Diffable DataSource
+private extension WeatherViewController {
+    func configureDataSource() {
+        let currentWeatherCellRegistration = UICollectionView.CellRegistration<CurrentWeatherCollectionViewCell, CurrentWeather> { cell, indexPath, data in
+            cell.configure(data: data)
+        }
+        
+        let threeHoursCellRegistration = UICollectionView.CellRegistration<ThreeHoursCollectionViewCell, WeatherData> { cell, indexPath, data in
+            cell.configure(data: data)
+        }
+        
+        let fiveDaysCellRegistration = UICollectionView.CellRegistration<MinMaxTempCollectionViewCell, DayWeather> { cell, indexPath, data in
+            cell.configure(data: data, index: indexPath.item)
+        }
+        
+        let mapCellRegistration = UICollectionView.CellRegistration<MapCollectionViewCell, CurrentWeather> { cell, indexPath, data in
+            cell.mapView.delegate = self
+            cell.configure(data: data)
+        }
+        
+        let weatherCellRegistration = UICollectionView.CellRegistration<WeatherDataCollectionViewCell, [WeatherDataType: String]> { cell, indexPath, data in
+            guard let category = WeatherDataType(rawValue: indexPath.item) else { return }
+            cell.configure(data: data[category], category: category)
+        }
+        
+        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+            switch itemIdentifier {
+            case .currentWeatherData(let data):
+                return collectionView.dequeueConfiguredReusableCell(using: currentWeatherCellRegistration, for: indexPath, item: data)
+            case .threeHourForecast(let data):
+                return collectionView.dequeueConfiguredReusableCell(using: threeHoursCellRegistration, for: indexPath, item: data)
+            case .fiveDayForecast(let data):
+                return collectionView.dequeueConfiguredReusableCell(using: fiveDaysCellRegistration, for: indexPath, item: data)
+            case .mapData(let data):
+                return collectionView.dequeueConfiguredReusableCell(using: mapCellRegistration, for: indexPath, item: data)
+            case .weatherData(let data):
+                return collectionView.dequeueConfiguredReusableCell(using: weatherCellRegistration, for: indexPath, item: data)
+            }
+        })
+        
+        let headerRegistration = UICollectionView.SupplementaryRegistration
+        <UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) { supplementaryView, elementKind, indexPath in
+            let section = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
+            
+            var content = UIListContentConfiguration.groupedHeader()
+            content.text = section.headerTitle
+            content.textProperties.font = .systemFont(ofSize: 18)
+            content.textProperties.color = .white
+            
+            supplementaryView.contentConfiguration = content
+        }
+        
+        dataSource.supplementaryViewProvider = { collectionView, elementKind, indexPath in
+            return collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
+        }
     }
 }
 
@@ -211,45 +351,5 @@ extension WeatherViewController: MKMapViewDelegate {
         guard let humidity = viewModel.outputCurrentWeatherData.value?.main.humidity else { return MKAnnotationView() }
         annotationView.glyphText = "\(humidity)"
         return annotationView
-    }
-}
-
-extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let list = viewModel.outputForeCastData.value?.list else {
-            return 0
-        }
-        switch collectionView.tag {
-        case 0:
-            return list.count
-        case 1:
-            return viewModel.outputWeekData.value.count
-        case 3:
-            return WeatherDataType.allCases.count
-        default:
-            return 0
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch collectionView.tag {
-        case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThreeHoursCollectionViewCell.identifier, for: indexPath) as! ThreeHoursCollectionViewCell
-            let data = viewModel.outputForeCastData.value?.list[indexPath.item]
-            cell.configure(data: data)
-            return cell
-        case 1:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MinMaxTempCollectionViewCell.identifier, for: indexPath) as! MinMaxTempCollectionViewCell
-            let data = viewModel.outputWeekData.value[indexPath.item]
-            cell.configure(data: data, index: indexPath.item)
-            return cell
-        case 3:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherDataCollectionViewCell.identifier, for: indexPath) as! WeatherDataCollectionViewCell
-            let type = WeatherDataType(rawValue: indexPath.item)
-//            cell.configure(data: viewModel.outputCurrentWeatherData.value, category: type)
-            return cell
-        default:
-            return UICollectionViewCell()
-        }
     }
 }
