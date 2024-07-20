@@ -46,9 +46,9 @@ final class WeatherDataCollectionViewCell: BaseCollectionViewCell {
         }
     }
     
-    func configure(data: CurrentWeather?, category: WeatherDataType?) {
+    func configure(data: String?, category: WeatherDataType?) {
         guard let category , let data else { return }
         titleLabel.text = category.title
-        contentLabel.text = category.value(from: data)
+        contentLabel.text = data
     }
 }

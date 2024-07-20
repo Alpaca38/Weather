@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DayWeather {
+struct DayWeather: Hashable {
     let day: String
     let weatherIconURL: URL?
     let tempMin: Double

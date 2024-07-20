@@ -246,7 +246,7 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
         case 3:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherDataCollectionViewCell.identifier, for: indexPath) as! WeatherDataCollectionViewCell
             let type = WeatherDataType(rawValue: indexPath.item)
-            cell.configure(data: viewModel.outputCurrentWeatherData.value, category: type)
+//            cell.configure(data: viewModel.outputCurrentWeatherData.value, category: type)
             return cell
         default:
             return UICollectionViewCell()

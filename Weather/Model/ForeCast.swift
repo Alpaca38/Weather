@@ -8,20 +8,20 @@
 import Foundation
 
 // MARK: - ForeCast
-struct ForeCast: Decodable {
+struct ForeCast: Decodable, Hashable {
     let list: [WeatherData]
     let city: City
 }
 
 // MARK: - City
-struct City: Decodable {
+struct City: Decodable, Hashable, Identifiable {
     let id: Int
     let name: String
     let coord: Coord
 }
 
 // MARK: - List
-struct WeatherData: Decodable {
+struct WeatherData: Decodable, Hashable {
     let dt: Int // UTC
     let main: Main
     let weather: [Weather]
