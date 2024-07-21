@@ -53,7 +53,7 @@ final class WeatherViewController: BaseViewController {
     }()
     
     private lazy var bottomToolbar = {
-        let view = UIToolbar()
+        let view = UIToolbar(frame: CGRect(x: 0, y: 0, width: Int(UIScreen.main.bounds.width), height: 44))
         view.tintColor = .white
         view.barTintColor = Color.backgroundColor
         let mapButton = UIBarButtonItem(image: UIImage(systemName: "map"), style: .plain, target: self, action: #selector(mapButtonTapped))
@@ -78,7 +78,6 @@ final class WeatherViewController: BaseViewController {
     override func configureLayout() {
         bottomToolbar.snp.makeConstraints {
             $0.bottom.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(44)
         }
         
         collectionView.snp.makeConstraints {
@@ -309,7 +308,7 @@ private extension WeatherViewController {
             guard let self else { return }
             let section = dataSource.snapshot().sectionIdentifiers[indexPath.section]
             
-            var content = UIListContentConfiguration.groupedHeader()
+            var content = UIListContentConfiguration.sidebarHeader()
             content.text = section.headerTitle
             content.textProperties.font = .systemFont(ofSize: 18)
             content.textProperties.color = .white
