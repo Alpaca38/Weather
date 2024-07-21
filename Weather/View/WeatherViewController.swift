@@ -43,10 +43,6 @@ private enum WeatherItem: Hashable {
 
 final class WeatherViewController: BaseViewController {
     private let viewModel = WeatherViewModel()
-    private let cityLabel = BaseLabel(font: .systemFont(ofSize: 32))
-    private let tempLabel = BaseLabel(font: .systemFont(ofSize: 70))
-    private let descriptionLabel = BaseLabel(font: .systemFont(ofSize: 24))
-    private let tempMinMaxLabel = BaseLabel(font: .systemFont(ofSize: 23))
     
     private lazy var collectionView = {
         let view = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
@@ -90,6 +86,27 @@ final class WeatherViewController: BaseViewController {
             $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
             $0.bottom.equalTo(bottomToolbar.snp.top)
         }
+    }
+}
+
+// MARK: Button Actions
+private extension WeatherViewController {
+    @objc func mapButtonTapped() {
+        let vc = MapViewController()
+        vc.sendCoord = { [weak self] coord in
+            guard let self else { return }
+            viewModel.inputCityCoord.value = coord
+        }
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func citySearchButtonTapped() {
+        let vc = SearchCityViewController()
+        vc.sendCityID = { [weak self] id in
+            guard let self else { return }
+            viewModel.inputCityID.value = id
+        }
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -199,24 +216,6 @@ private extension WeatherViewController {
         section.contentInsets = NSDirectionalEdgeInsets(top: 50, leading: 0, bottom: 0, trailing: 0)
         return section
     }
-    
-    @objc func mapButtonTapped() {
-        let vc = MapViewController()
-        vc.sendCoord = { [weak self] coord in
-            guard let self else { return }
-            viewModel.inputCityCoord.value = coord
-        }
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    @objc func citySearchButtonTapped() {
-        let vc = SearchCityViewController()
-        vc.sendCityID = { [weak self] id in
-            guard let self else { return }
-            viewModel.inputCityID.value = id
-        }
-        navigationController?.pushViewController(vc, animated: true)
-    }
 }
 
 // MARK: Data binding
@@ -280,7 +279,7 @@ private extension WeatherViewController {
             cell.configure(data: data, index: indexPath.item)
         }
         
-        let mapCellRegistration = UICollectionView.CellRegistration<MapCollectionViewCell, CurrentWeather> { cell, indexPath, data in
+        let mapCellRegistration = UICollectionView.CellRegistration<MapCollectionViewCell, CurrentWeather> { [weak self] cell, indexPath, data in
             cell.mapView.delegate = self
             cell.configure(data: data)
         }
@@ -306,8 +305,9 @@ private extension WeatherViewController {
         })
         
         let headerRegistration = UICollectionView.SupplementaryRegistration
-        <UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) { supplementaryView, elementKind, indexPath in
-            let section = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
+        <UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) { [weak self] supplementaryView, elementKind, indexPath in
+            guard let self else { return }
+            let section = dataSource.snapshot().sectionIdentifiers[indexPath.section]
             
             var content = UIListContentConfiguration.groupedHeader()
             content.text = section.headerTitle
