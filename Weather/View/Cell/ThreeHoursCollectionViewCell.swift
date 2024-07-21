@@ -10,13 +10,13 @@ import SnapKit
 import Kingfisher
 
 final class ThreeHoursCollectionViewCell: BaseCollectionViewCell {
-    private let timeLabel = BaseLabel(font: .boldSystemFont(ofSize: 18))
+    private let timeLabel = BaseLabel(font: .boldSystemFont(ofSize: 14))
     private let imageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
         return view
     }()
-    private let tempLabel = BaseLabel(font: .boldSystemFont(ofSize: 18))
+    private let tempLabel = BaseLabel(font: .boldSystemFont(ofSize: 14))
     
     private lazy var stackView = {
         let view = UIStackView(arrangedSubviews: [timeLabel, imageView, tempLabel])

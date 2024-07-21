@@ -31,6 +31,19 @@ private enum WeatherSection: Int, CaseIterable {
             return ""
         }
     }
+    
+    var image: UIImage? {
+        switch self {
+        case .currentWeather:
+            nil
+        case .threehours, .fivedays:
+            UIImage(systemName: "calendar")
+        case .map:
+            UIImage(systemName: "thermometer.medium")
+        case .weatherData:
+            nil
+        }
+    }
 }
 
 private enum WeatherItem: Hashable {
@@ -132,7 +145,9 @@ private extension WeatherViewController {
                 section?.boundarySupplementaryItems = [header]
                 return section
             case .map:
-                return self?.createMapSection()
+                let section = self?.createMapSection()
+                section?.boundarySupplementaryItems = [header]
+                return section
             case .weatherData:
                 return self?.createWeatherDataSection()
             }
@@ -149,7 +164,6 @@ private extension WeatherViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
         
         return section
     }
@@ -160,7 +174,6 @@ private extension WeatherViewController {
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.25 * 1.3))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.interItemSpacing = .fixed(16)
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 40, trailing: 20)
@@ -179,7 +192,6 @@ private extension WeatherViewController {
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(80))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.interItemSpacing = .fixed(16)
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20)
@@ -199,7 +211,12 @@ private extension WeatherViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 40, trailing: 20)
+        
+        let decorationItem = NSCollectionLayoutDecorationItem.background(elementKind: BackgroundDecorationView.identifier)
+        decorationItem.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
+        section.decorationItems = [decorationItem]
+        
         return section
     }
     
@@ -212,7 +229,7 @@ private extension WeatherViewController {
         group.interItemSpacing = .fixed(16)
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 50, leading: 0, bottom: 0, trailing: 0)
+        
         return section
     }
 }
@@ -308,10 +325,15 @@ private extension WeatherViewController {
             guard let self else { return }
             let section = dataSource.snapshot().sectionIdentifiers[indexPath.section]
             
-            var content = UIListContentConfiguration.sidebarHeader()
+            var content = UIListContentConfiguration.groupedHeader()
             content.text = section.headerTitle
-            content.textProperties.font = .systemFont(ofSize: 18)
+            content.textProperties.font = .systemFont(ofSize: 14)
             content.textProperties.color = .white
+            
+            content.image = section.image
+            content.imageProperties.tintColor = .white
+            content.imageProperties.reservedLayoutSize = CGSize(width: 15, height: 15)
+            content.imageToTextPadding = 10
             
             supplementaryView.contentConfiguration = content
         }
