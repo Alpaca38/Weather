@@ -56,33 +56,20 @@ final class WeatherViewController: BaseViewController {
         return view
     }()
     
-    private var dataSource: UICollectionViewDiffableDataSource<WeatherSection, WeatherItem>!
-    private var snapshot = NSDiffableDataSourceSnapshot<WeatherSection, WeatherItem>()
-    
-    private lazy var mapButton = {
-        let view = UIButton()
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .light)
-        view.setImage(UIImage(systemName: "map", withConfiguration: imageConfig), for: .normal)
+    private lazy var bottomToolbar = {
+        let view = UIToolbar()
         view.tintColor = .white
-        view.addTarget(self, action: #selector(mapButtonTapped), for: .touchUpInside)
-        return view
-    }()
-    private lazy var citySearchButton = {
-        let view = UIButton()
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .light)
-        view.setImage(UIImage(systemName: "list.bullet", withConfiguration: imageConfig), for: .normal)
-        view.tintColor = .white
-        view.addTarget(self, action: #selector(citySearchButtonTapped), for: .touchUpInside)
-        return view
-    }()
-    private lazy var bottomView = {
-        let view = UIView()
-        view.addSubview(mapButton)
-        view.addSubview(citySearchButton)
-        view.backgroundColor = Color.contentBackgroundColor
+        view.barTintColor = Color.backgroundColor
+        let mapButton = UIBarButtonItem(image: UIImage(systemName: "map"), style: .plain, target: self, action: #selector(mapButtonTapped))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        let citySearchButton = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(citySearchButtonTapped))
+        view.setItems([mapButton, flexibleSpace, citySearchButton], animated: true)
         self.view.addSubview(view)
         return view
     }()
+    
+    private var dataSource: UICollectionViewDiffableDataSource<WeatherSection, WeatherItem>!
+    private var snapshot = NSDiffableDataSourceSnapshot<WeatherSection, WeatherItem>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,24 +80,15 @@ final class WeatherViewController: BaseViewController {
     }
     
     override func configureLayout() {
-        bottomView.snp.makeConstraints {
-            $0.bottom.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(80)
-        }
-        
-        mapButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(10)
-            $0.leading.equalToSuperview().offset(20)
-        }
-        
-        citySearchButton.snp.makeConstraints {
-            $0.top.equalTo(mapButton)
-            $0.trailing.equalToSuperview().offset(-20)
+        bottomToolbar.snp.makeConstraints {
+            $0.bottom.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(44)
         }
         
         collectionView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
-            $0.bottom.equalTo(bottomView.snp.top)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.bottom.equalTo(bottomToolbar.snp.top)
         }
     }
 }
